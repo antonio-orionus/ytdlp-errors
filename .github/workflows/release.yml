@@ -35,9 +35,8 @@ jobs:
             echo "Tag $tag does not match package.json $pkg"; exit 1
           fi
 
-      - run: npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: publish to npm via Trusted Publisher (OIDC)
+        run: npm publish --provenance --access public
 
       - name: create GitHub Release
         uses: softprops/action-gh-release@v2
