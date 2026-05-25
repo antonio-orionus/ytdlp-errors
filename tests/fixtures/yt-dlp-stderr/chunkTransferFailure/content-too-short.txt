@@ -1,0 +1,3 @@
+[download] Destination: video.mp4
+[download]  17.3% of ~  120.45MiB at    8.21MiB/s ETA 00:12
+ERROR: content too short (expected 126304256 bytes and served 21891584)

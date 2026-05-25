@@ -1,0 +1,65 @@
+{
+  "name": "ytdlp-errors",
+  "version": "1.0.0",
+  "description": "Classify yt-dlp stderr into a closed taxonomy of error kinds (botBlock, ipBlock, rateLimit, ageRestricted, drmProtected, ...). Zero deps, pure regex, ESM + CJS.",
+  "keywords": [
+    "yt-dlp",
+    "youtube-dl",
+    "error",
+    "classifier",
+    "stderr",
+    "parser",
+    "taxonomy"
+  ],
+  "homepage": "https://github.com/antonio-orionus/ytdlp-errors#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/antonio-orionus/ytdlp-errors.git"
+  },
+  "bugs": {
+    "url": "https://github.com/antonio-orionus/ytdlp-errors/issues"
+  },
+  "license": "MIT",
+  "author": "Antonio Orionus",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "lint": "tsc --noEmit",
+    "prepublishOnly": "npm run typecheck && npm run test && npm run build",
+    "scan-upstream": "node scripts/scan-yt-dlp-source.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.0",
+    "vitest": "^2.1.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

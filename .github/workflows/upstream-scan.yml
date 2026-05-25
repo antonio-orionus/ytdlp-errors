@@ -1,0 +1,57 @@
+name: upstream-scan
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+
+      - name: scan yt-dlp source at current pin
+        run: node scripts/scan-yt-dlp-source.mjs --clone
+
+      - name: bump pin to latest stable
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          latest=$(curl -sf -H "Authorization: Bearer $GH_TOKEN" https://api.github.com/repos/yt-dlp/yt-dlp/releases/latest | jq -r .tag_name)
+          if [ -z "$latest" ] || [ "$latest" = "null" ]; then
+            echo "Could not fetch latest yt-dlp tag"; exit 1
+          fi
+          commit=$(curl -sf -H "Authorization: Bearer $GH_TOKEN" "https://api.github.com/repos/yt-dlp/yt-dlp/git/refs/tags/${latest}" | jq -r .object.sha)
+          echo "Latest yt-dlp: ${latest} @ ${commit}"
+          jq --arg v "$latest" --arg c "$commit" '.version = $v | .commit = $c' \
+            data/yt-dlp-version.json > data/yt-dlp-version.json.new
+          mv data/yt-dlp-version.json.new data/yt-dlp-version.json
+
+      - name: rescan against the new pin
+        run: node scripts/scan-yt-dlp-source.mjs --clone
+
+      - name: open PR if anything changed
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'chore(upstream): bump yt-dlp pin + rescan strings'
+          branch: chore/upstream-scan
+          delete-branch: true
+          title: 'chore(upstream): bump yt-dlp pin + rescan strings'
+          body: |
+            Automated weekly scan picked up changes from the current `data/yt-dlp-version.json` pin.
+
+            Review:
+            1. Walk `data/known-yt-dlp-strings.json` diff — new entries land with `kind: null`. Assign a kind (or leave null intentionally + document why in `notes`).
+            2. If a regex needs to be extended for the new strings, edit `src/patterns.ts` and add a fixture under `tests/fixtures/yt-dlp-stderr/<kind>/`.
+            3. Tests must pass before merge — `upstream-coverage.test.ts` enforces non-null kinds round-trip correctly.

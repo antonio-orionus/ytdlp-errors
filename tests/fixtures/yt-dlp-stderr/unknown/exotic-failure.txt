@@ -1,0 +1,1 @@
+ERROR: [vimeo] 12345: This is an exotic failure that no pattern matches; classifier should fall through to unknown.

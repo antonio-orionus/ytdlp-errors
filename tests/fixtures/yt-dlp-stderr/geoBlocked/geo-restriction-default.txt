@@ -1,0 +1,2 @@
+[some_site] abc123: Downloading webpage
+ERROR: [some_site] abc123: This video is not available from your location due to geo restriction. You might want to use a VPN or a proxy server (with --proxy) to workaround.

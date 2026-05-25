@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "note": "Strings that yt-dlp surfaces but does NOT originate. They come from external APIs (YouTube player response, Twitch, etc.) and are passed through verbatim. Curated by hand because the scan script can't see them in yt-dlp source. Every entry carries provenance.",
+  "strings": [
+    {
+      "id": "yt-bot-confirm-ascii",
+      "fragment": "Sign in to confirm you're not a bot",
+      "kind": "botBlock",
+      "provenance": "YouTube playabilityStatus.reason — passed through by yt-dlp in extractor/youtube/_video.py via raise_no_formats",
+      "notes": "Apostrophe is ASCII U+0027 in some locales/clients"
+    },
+    {
+      "id": "yt-bot-confirm-typographic",
+      "fragment": "Sign in to confirm you’re not a bot",
+      "kind": "botBlock",
+      "provenance": "YouTube playabilityStatus.reason — current default uses U+2019",
+      "notes": "Apostrophe is U+2019 (RIGHT SINGLE QUOTATION MARK)"
+    },
+    {
+      "id": "yt-content-unavailable-rate-limit",
+      "fragment": "This content isn't available, try again later",
+      "kind": "rateLimit",
+      "provenance": "YouTube playabilityStatus.reason — expanded by extractor/youtube/_video.py:4055-4060 with 'has been rate-limited by YouTube' suffix"
+    },
+    {
+      "id": "yt-rate-limited-suffix",
+      "fragment": "has been rate-limited by YouTube for up to an hour",
+      "kind": "rateLimit",
+      "provenance": "extractor/youtube/_video.py:4057 — appended to the YouTube reason when 'try again later' matches"
+    },
+    {
+      "id": "yt-uploader-not-available-in-country",
+      "fragment": "The uploader has not made this video available in your country",
+      "kind": "geoBlocked",
+      "provenance": "YouTube playabilityStatus.subreason — extractor/youtube/_video.py forwards via raise_geo_restricted"
+    },
+    {
+      "id": "yt-private-video-skip-reason",
+      "fragment": "Private video",
+      "kind": "unavailable",
+      "provenance": "YouTube playabilityStatus.reason and test 'skip' fields in extractor/youtube/_video.py"
+    },
+    {
+      "id": "yt-age-restricted-skip",
+      "fragment": "Age-restricted; requires authentication",
+      "kind": "ageRestricted",
+      "provenance": "Test 'skip' messages in extractor/youtube/_video.py:337, 401, 1049, 1446"
+    },
+    {
+      "id": "yt-ip-likely-blocked",
+      "fragment": "Your IP is likely being blocked by Youtube",
+      "kind": "ipBlock",
+      "provenance": "extractor/youtube/_video.py:3190 — raised when all player responses are invalid"
+    },
+    {
+      "id": "yt-captcha-challenge",
+      "fragment": "YouTube is requiring a captcha challenge before playback",
+      "kind": "botBlock",
+      "provenance": "extractor/youtube/_video.py:4053 — appended when playerCaptchaViewModel is present in errorScreen"
+    }
+  ]
+}
