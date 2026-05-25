@@ -16,9 +16,11 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
-          registry-url: https://registry.npmjs.org
+
+      - name: upgrade npm to latest (needs >= 11.5.1 for Trusted Publishers)
+        run: npm install -g npm@latest
 
       - run: npm ci
       - run: npm run typecheck
