@@ -5,11 +5,26 @@
   "keywords": [
     "yt-dlp",
     "youtube-dl",
+    "ytdlp",
+    "yt-dlp-wrapper",
     "error",
+    "errors",
+    "error-handling",
+    "error-classifier",
     "classifier",
     "stderr",
+    "stderr-parser",
     "parser",
-    "taxonomy"
+    "taxonomy",
+    "regex",
+    "typescript",
+    "nodejs",
+    "esm",
+    "cjs",
+    "zero-dependencies",
+    "video-download",
+    "media-download",
+    "downloader"
   ],
   "homepage": "https://github.com/antonio-orionus/ytdlp-errors#readme",
   "repository": {
