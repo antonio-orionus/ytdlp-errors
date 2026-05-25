@@ -1,0 +1,20 @@
+{
+  "note": "Golden snapshot of stable `code` strings exposed by errorKindMetadata(). Codes are public API — host apps key i18n strings, analytics labels, and logs on them. Any diff here is a deliberate breaking change and requires a major SemVer bump.",
+  "codes": {
+    "ageRestricted": "YTDLP_AGE_RESTRICTED",
+    "botBlock": "YTDLP_BOT_BLOCK",
+    "chunkTransferFailure": "YTDLP_CHUNK_TRANSFER_FAILURE",
+    "drmProtected": "YTDLP_DRM_PROTECTED",
+    "geoBlocked": "YTDLP_GEO_BLOCKED",
+    "ipBlock": "YTDLP_IP_BLOCK",
+    "loginRequired": "YTDLP_LOGIN_REQUIRED",
+    "network": "YTDLP_NETWORK",
+    "outOfDiskSpace": "YTDLP_OUT_OF_DISK_SPACE",
+    "parse": "YTDLP_PARSE_FAILURE",
+    "postprocessFailure": "YTDLP_POSTPROCESS_FAILURE",
+    "rateLimit": "YTDLP_RATE_LIMIT",
+    "unavailable": "YTDLP_UNAVAILABLE",
+    "unknown": "YTDLP_UNKNOWN",
+    "unsupportedUrl": "YTDLP_UNSUPPORTED_URL"
+  }
+}

@@ -1,0 +1,3 @@
+[youtube] dQw4w9WgXcQ: Downloading webpage
+[youtube] dQw4w9WgXcQ: Downloading ios player API JSON
+ERROR: [youtube] dQw4w9WgXcQ: This video is DRM protected and no formats are available

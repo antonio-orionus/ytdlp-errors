@@ -1,0 +1,3 @@
+[youtube] abc123: Downloading webpage
+[youtube] abc123: Downloading ios player API JSON
+ERROR: [youtube] abc123: The uploader has not made this video available in your country. Use --geo-bypass to attempt to bypass.

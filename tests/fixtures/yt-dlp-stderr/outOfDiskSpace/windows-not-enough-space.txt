@@ -1,0 +1,1 @@
+ERROR: There is not enough space on the disk.

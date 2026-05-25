@@ -1,0 +1,3 @@
+[download] Destination: video.mp4
+[download]   3.2% of   45.78MiB at    1.12MiB/s ETA 00:39
+ERROR: unable to download video data: [Errno 104] Connection reset by peer
