@@ -32,7 +32,7 @@
 
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -48,6 +48,7 @@ function loadPin() {
 
 function clone(commit) {
   const dir = join(ROOT, '.tmp', 'yt-dlp');
+  rmSync(dir, { recursive: true, force: true });
   mkdirSync(dirname(dir), { recursive: true });
   execFileSync('git', ['init', '--quiet', dir], { stdio: 'inherit' });
   execFileSync('git', ['-C', dir, 'remote', 'add', 'origin', 'https://github.com/yt-dlp/yt-dlp.git'], { stdio: 'inherit' });
@@ -93,15 +94,15 @@ function scanFile(absPath, rel) {
   for (const m of src.matchAll(CALL_RE)) {
     out.push({
       source: `${rel}:${lineOf(m.index)}`,
-      call: m[0].split(/[\s(]/)[0]!,
-      fragment: m[2]!
+      call: m[0].split(/[\s(]/)[0],
+      fragment: m[2]
     });
   }
   for (const m of src.matchAll(DEFAULT_MSG_RE)) {
     out.push({
       source: `${rel}:${lineOf(m.index)}`,
       call: 'default_msg',
-      fragment: m[1]!
+      fragment: m[1]
     });
   }
   return out;
