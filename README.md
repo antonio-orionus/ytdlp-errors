@@ -75,6 +75,7 @@ Custom patterns are tried **before** the built-ins. Keys must be existing `Class
 | `loginRequired` | `YTDLP_LOGIN_REQUIRED` | yes | yes | Subscriber-only / private |
 | `outOfDiskSpace` | `YTDLP_OUT_OF_DISK_SPACE` | yes | yes | ENOSPC during write/merge |
 | `chunkTransferFailure` | `YTDLP_CHUNK_TRANSFER_FAILURE` | yes | no | Ranged HTTP truncation; retries exhausted |
+| `missingDependency` | `YTDLP_MISSING_DEPENDENCY` | yes | yes | Required binary such as ffmpeg is missing |
 | `postprocessFailure` | `YTDLP_POSTPROCESS_FAILURE` | yes | no | ffmpeg mux/convert/remux failure |
 | `parse` | `YTDLP_PARSE_FAILURE` | no | no | `--dump-json` output unparseable |
 | `network` | `YTDLP_NETWORK` | yes | no | Transport-level error |

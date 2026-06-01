@@ -90,6 +90,13 @@ export const ERROR_KIND_METADATA: Record<YtDlpErrorKind, KindMetadata> = {
     userActionable: false,
     suggestedFlags: ['--retries', '--fragment-retries', '--http-chunk-size']
   },
+  missingDependency: {
+    code: 'YTDLP_MISSING_DEPENDENCY',
+    recoverable: true,
+    userActionable: true,
+    suggestedFlags: ['--ffmpeg-location'],
+    docsUrl: `${WIKI}/FFmpeg`
+  },
   postprocessFailure: {
     code: 'YTDLP_POSTPROCESS_FAILURE',
     recoverable: true,

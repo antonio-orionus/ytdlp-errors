@@ -66,6 +66,11 @@ export const ERROR_PATTERNS: Record<ClassifierKind, RegExp> = {
   //  - http downloader: "Did not get any data blocks" when stream is empty
   chunkTransferFailure: /Giving up after \d+ retries|content too short \(expected \d+ bytes and served \d+\)|\d+ bytes read, \d+ more expected|Did not get any data blocks/i,
 
+  // yt-dlp postprocessor/ffmpeg.py: missing both probe and converter tools.
+  // Keep this before postprocessFailure so hosts can offer installation UI
+  // instead of a generic retry/remux path.
+  missingDependency: /ffprobe and ffmpeg not found/i,
+
   // Anchored on `ERROR:` to avoid matching titles or filenames containing
   // "Conversion failed". ENOSPC during merge masquerades as ffmpeg failure;
   // host apps re-probe disk space after seeing this kind.
@@ -80,7 +85,7 @@ export const ERROR_PATTERNS: Record<ClassifierKind, RegExp> = {
   // is checked first so "Giving up after N retries" lines classify correctly
   // even when they also contain ECONNRESET. Includes Python's textual error
   // form ("Connection reset by peer") emitted via OSError.strerror.
-  network: /\b(?:timed? out|timeout|econn(?:reset|refused|aborted)|enotfound|getaddrinfo|network is unreachable|connection reset by peer)\b/i
+  network: /unable to download video data|\b(?:timed? out|timeout|econn(?:reset|refused|aborted)|enotfound|getaddrinfo|network is unreachable|connection reset by peer)\b/i
 };
 
 export const PATTERN_ENTRIES = Object.entries(ERROR_PATTERNS) as [ClassifierKind, RegExp][];

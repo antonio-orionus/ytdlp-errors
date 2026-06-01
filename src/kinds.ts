@@ -14,6 +14,7 @@ export const YT_DLP_ERROR_KINDS = [
   'loginRequired',
   'outOfDiskSpace',
   'chunkTransferFailure',
+  'missingDependency',
   'postprocessFailure',
   'parse',
   'network',
