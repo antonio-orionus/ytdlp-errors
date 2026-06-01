@@ -23,8 +23,8 @@
       "fragment": "unable to download video data",
       "source": "yt_dlp/YoutubeDL.py:3553",
       "call": "report_error",
-      "kind": null,
-      "notes": "Generic wrapper — actual cause is the wrapped network_exceptions stringification. Classified via the wrapped error text, not this fragment. Left null intentionally."
+      "kind": "network",
+      "notes": "Generic wrapper around network_exceptions; classify as network when the wrapped exception text is unavailable."
     },
     {
       "id": "yt-postprocessing-wrapper",
@@ -82,8 +82,8 @@
       "fragment": "ffprobe and ffmpeg not found",
       "source": "yt_dlp/postprocessor/ffmpeg.py:234",
       "call": "raise PostProcessingError",
-      "kind": null,
-      "notes": "Distinct user-actionable kind (missing dependency). Not yet a first-class enum entry — host app should detect this case explicitly. Candidate for v1.1 as 'missingDependency'."
+      "kind": "missingDependency",
+      "notes": "Distinct user-actionable missing dependency; host apps can suggest installing ffmpeg or setting --ffmpeg-location."
     }
   ]
 }

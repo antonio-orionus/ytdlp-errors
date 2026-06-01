@@ -8,6 +8,7 @@
     "geoBlocked": "YTDLP_GEO_BLOCKED",
     "ipBlock": "YTDLP_IP_BLOCK",
     "loginRequired": "YTDLP_LOGIN_REQUIRED",
+    "missingDependency": "YTDLP_MISSING_DEPENDENCY",
     "network": "YTDLP_NETWORK",
     "outOfDiskSpace": "YTDLP_OUT_OF_DISK_SPACE",
     "parse": "YTDLP_PARSE_FAILURE",
