@@ -1,0 +1,123 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+reviews:
+  profile: assertive
+  high_level_summary_instructions: >-
+    Write a concise PR summary with:
+
+    1. Public API or package behavior changes
+
+    2. Internal classifier, regex, snapshot, or metadata changes
+
+    3. Risk areas, especially SemVer stability, ESM/CJS exports, release automation, upstream
+    snapshot churn, and GitHub Actions permissions
+
+    4. Tests or checks that should be run
+
+
+    Avoid marketing language. Do not invent test results.
+  auto_title_instructions: |-
+    Generate concise PR titles. Prefer conventional style when clear:
+    fix(scope): ...
+    feat(scope): ...
+    refactor(scope): ...
+    chore(scope): ...
+    docs(scope): ...
+    test(scope): ...
+
+    Do not use hype. Do not include implementation details unless they are the point of the PR.
+  review_details: true
+  sequence_diagrams: false
+  assess_linked_issues: false
+  related_issues: false
+  related_prs: false
+  auto_apply_labels: true
+  labeling_instructions:
+    - label: bug
+      instructions: >-
+        Use this label when the PR fixes broken classification, incorrect metadata, runtime errors,
+        failing tests, build failures, CI failures, or user-visible package defects.
+    - label: enhancement
+      instructions: >-
+        Use this label when the PR adds a new classifier kind, expands the public API, improves
+        behavior for consumers, or changes classification output in a useful way.
+    - label: dependencies
+      instructions: >-
+        Use this label when the PR changes package.json, package-lock.json, dependency versions,
+        dependency constraints, npm behavior, or package manager configuration.
+    - label: documentation
+      instructions: >-
+        Use this label when the PR changes README files, changelog text, public API docs, examples,
+        generated documentation, or user-facing comments.
+    - label: github_actions
+      instructions: >-
+        Use this label when the PR changes GitHub Actions workflows, release automation, upstream
+        scan automation, permissions, trusted publishing, artifact handling, or repository
+        automation.
+    - label: tests
+      instructions: >-
+        Use this label when the PR primarily changes Vitest coverage, golden snapshots, fixtures, or
+        test helpers.
+  suggested_reviewers: false
+  in_progress_fortune: false
+  poem: false
+  pre_merge_checks:
+    docstrings:
+      mode: off
+  tools:
+    eslint:
+      enabled: false
+  path_filters:
+    # Positive filters define the review scope. Keep source, tests, data, dot config, and workflows
+    # in scope, then trim generated or local-only outputs.
+    - '*'
+    - '**/*'
+    - '.coderabbit.yaml'
+    - '.github/**'
+    - '!dist/**'
+    - '!node_modules/**'
+    - '!coverage/**'
+    - '!.tmp/**'
+    - '!.cache/**'
+    - '!*.log'
+    - '!package-lock.json'
+  path_instructions:
+    - path: .github/workflows/**
+      instructions: >-
+        Review GitHub Actions for least-privilege permissions, unsafe secret exposure, untrusted PR
+        execution, shell quoting, release/tag correctness, npm trusted publishing assumptions,
+        artifact handling, and commands that can fail silently.
+    - path: scripts/**
+      instructions: >-
+        Review Node scripts for unsafe command construction, stale temporary directories, path
+        traversal, network/release API assumptions, missing error handling, platform-specific
+        behavior, and reproducibility in CI.
+    - path: src/**
+      instructions: >-
+        This is a zero-runtime-dependency TypeScript library. Prioritize public API stability,
+        SemVer impact, ESM/CJS export compatibility, regex correctness, classification precedence,
+        recoverability metadata accuracy, and behavior for unknown stderr.
+    - path: src/patterns.ts
+      instructions: >-
+        Regex changes are behavior changes. Check ordering, overly broad matches, missed case
+        variants, false positives, and whether the changed patterns are covered by snapshot or
+        classifier tests.
+    - path: src/metadata.ts
+      instructions: >-
+        Metadata codes are public API. Flag code string changes, recoverability changes, suggested
+        flag changes, or docs URL changes unless tests and SemVer impact are explicit.
+    - path: data/**
+      instructions: >-
+        Snapshot data drives upstream compatibility. Watch for accidental wholesale rewrites,
+        untriaged kind:null growth, mismatched source/fragment/kind values, and generated churn that
+        should be split from source fixes.
+    - path: tests/**
+      instructions: >-
+        Prioritize meaningful coverage, deterministic fixtures, golden-code stability, and whether
+        tests prove the declared classifier behavior. Do not nitpick formatting unless it makes the
+        test unreliable.
+    - path: package.json
+      instructions: >-
+        Review package exports, files, sideEffects, engines, scripts, dependency surface, and
+        release/publish settings because this package is consumed as both ESM and CJS.
+  slop_detection:
+    label: needs-human-review
