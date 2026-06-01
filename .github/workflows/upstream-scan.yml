@@ -31,7 +31,23 @@ jobs:
           if [ -z "$latest" ] || [ "$latest" = "null" ]; then
             echo "Could not fetch latest yt-dlp tag"; exit 1
           fi
-          commit=$(curl -sf -H "Authorization: Bearer $GH_TOKEN" "https://api.github.com/repos/yt-dlp/yt-dlp/git/refs/tags/${latest}" | jq -r .object.sha)
+          tag_ref=$(curl -sf -H "Authorization: Bearer $GH_TOKEN" "https://api.github.com/repos/yt-dlp/yt-dlp/git/refs/tags/${latest}")
+          commit=$(jq -er '.object.sha // empty' <<<"$tag_ref")
+          tag_type=$(jq -er '.object.type // empty' <<<"$tag_ref")
+          if [ -z "$commit" ] || [ "$commit" = "null" ]; then
+            echo "Could not resolve commit for yt-dlp tag ${latest}"; exit 1
+          fi
+          if [ "$tag_type" = "tag" ]; then
+            tag_object=$(curl -sf -H "Authorization: Bearer $GH_TOKEN" "https://api.github.com/repos/yt-dlp/yt-dlp/git/tags/${commit}")
+            commit=$(jq -er '.object.sha // empty' <<<"$tag_object")
+            tag_type=$(jq -er '.object.type // empty' <<<"$tag_object")
+            if [ -z "$commit" ] || [ "$commit" = "null" ]; then
+              echo "Could not dereference annotated yt-dlp tag ${latest}"; exit 1
+            fi
+          fi
+          if [ "$tag_type" != "commit" ]; then
+            echo "yt-dlp tag ${latest} resolved to unsupported object type ${tag_type}"; exit 1
+          fi
           echo "Latest yt-dlp: ${latest} @ ${commit}"
           jq --arg v "$latest" --arg c "$commit" '.version = $v | .commit = $c' \
             data/yt-dlp-version.json > data/yt-dlp-version.json.new
@@ -39,6 +55,12 @@ jobs:
 
       - name: rescan against the new pin
         run: node scripts/scan-yt-dlp-source.mjs --clone
+
+      - name: validate generated changes
+        run: |
+          npm run typecheck
+          npm run test
+          npm run build
 
       - name: open PR if anything changed
         uses: peter-evans/create-pull-request@v8
