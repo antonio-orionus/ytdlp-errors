@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.1.0 — missing dependency classification
+
+### Added
+
+- Added `missingDependency` as a first-class error kind for missing `ffmpeg` / `ffprobe`.
+- Added stable code `YTDLP_MISSING_DEPENDENCY`, metadata, README coverage, and fixture coverage.
+
+### Changed
+
+- Classified yt-dlp's generic `unable to download video data` wrapper as `network`.
+- Updated the upstream yt-dlp snapshot so no entries remain with `kind: null`.
+- Hardened the upstream scan workflow for Node 24 actions, annotated tag dereferencing, and inline validation before generated PRs are opened.
+
 ## 1.0.0 — initial release
 
 First public release. Curated regex taxonomy of yt-dlp error kinds, snapshot-anchored to the upstream source.
