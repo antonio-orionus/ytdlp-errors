@@ -32,7 +32,7 @@ jobs:
           TAG_REF: ${{ github.ref }}
         run: |
           tag="${TAG_REF#refs/tags/v}"
-          pkg=$(node -p "require('./package.json').version")
+          pkg="$(node -p "require('./package.json').version")"
           if [ "$tag" != "$pkg" ]; then
             echo "Tag $tag does not match package.json $pkg"; exit 1
           fi
