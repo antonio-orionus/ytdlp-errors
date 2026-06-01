@@ -31,7 +31,11 @@ jobs:
           if [ -z "$latest" ] || [ "$latest" = "null" ]; then
             echo "Could not fetch latest yt-dlp tag"; exit 1
           fi
-          commit=$(curl -sf -H "Authorization: Bearer $GH_TOKEN" "https://api.github.com/repos/yt-dlp/yt-dlp/git/refs/tags/${latest}" | jq -r .object.sha)
+          tag_ref=$(curl -sf -H "Authorization: Bearer $GH_TOKEN" "https://api.github.com/repos/yt-dlp/yt-dlp/git/refs/tags/${latest}")
+          commit=$(jq -r '.object.sha' <<<"$tag_ref")
+          if [ "$(jq -r '.object.type' <<<"$tag_ref")" = "tag" ]; then
+            commit=$(curl -sf -H "Authorization: Bearer $GH_TOKEN" "https://api.github.com/repos/yt-dlp/yt-dlp/git/tags/${commit}" | jq -r .object.sha)
+          fi
           echo "Latest yt-dlp: ${latest} @ ${commit}"
           jq --arg v "$latest" --arg c "$commit" '.version = $v | .commit = $c' \
             data/yt-dlp-version.json > data/yt-dlp-version.json.new
