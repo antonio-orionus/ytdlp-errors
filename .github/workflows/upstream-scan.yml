@@ -56,6 +56,12 @@ jobs:
       - name: rescan against the new pin
         run: node scripts/scan-yt-dlp-source.mjs --clone
 
+      - name: validate generated changes
+        run: |
+          npm run typecheck
+          npm run test
+          npm run build
+
       - name: open PR if anything changed
         uses: peter-evans/create-pull-request@v8
         with:
