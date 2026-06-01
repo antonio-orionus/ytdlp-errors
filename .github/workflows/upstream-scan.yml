@@ -32,9 +32,17 @@ jobs:
             echo "Could not fetch latest yt-dlp tag"; exit 1
           fi
           tag_ref=$(curl -sf -H "Authorization: Bearer $GH_TOKEN" "https://api.github.com/repos/yt-dlp/yt-dlp/git/refs/tags/${latest}")
-          commit=$(jq -r '.object.sha' <<<"$tag_ref")
-          if [ "$(jq -r '.object.type' <<<"$tag_ref")" = "tag" ]; then
-            commit=$(curl -sf -H "Authorization: Bearer $GH_TOKEN" "https://api.github.com/repos/yt-dlp/yt-dlp/git/tags/${commit}" | jq -r .object.sha)
+          commit=$(jq -er '.object.sha // empty' <<<"$tag_ref")
+          tag_type=$(jq -er '.object.type // empty' <<<"$tag_ref")
+          if [ -z "$commit" ] || [ "$commit" = "null" ]; then
+            echo "Could not resolve commit for yt-dlp tag ${latest}"; exit 1
+          fi
+          if [ "$tag_type" = "tag" ]; then
+            tag_object=$(curl -sf -H "Authorization: Bearer $GH_TOKEN" "https://api.github.com/repos/yt-dlp/yt-dlp/git/tags/${commit}")
+            commit=$(jq -er '.object.sha // empty' <<<"$tag_object")
+            if [ -z "$commit" ] || [ "$commit" = "null" ]; then
+              echo "Could not dereference annotated yt-dlp tag ${latest}"; exit 1
+            fi
           fi
           echo "Latest yt-dlp: ${latest} @ ${commit}"
           jq --arg v "$latest" --arg c "$commit" '.version = $v | .commit = $c' \
